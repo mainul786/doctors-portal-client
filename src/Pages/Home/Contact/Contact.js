@@ -8,7 +8,7 @@ const Contact = () => {
            <p className='text-xl text-primary'>Contact Us</p>
            <p className='text-2xl text-white'>Stay connected with us</p>
            <div className='flex justify-center mt-8'>
-           <div className="card items-center max-w-sm shadow-2xl ">
+           <div className="card items-center max-w-sm">
            <form className="card-body">
         <div className="form-control">
           <input type="email" placeholder="email" className="input input-bordered" required />
