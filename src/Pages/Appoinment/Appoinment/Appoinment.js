@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import AppoinmentBanner from '../AppoinmentBanner/AppoinmentBanner';
 import AvailableAppoinment from '../AvailableAppoinment/AvailableAppoinment';
 
+
 const Appoinment = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
+   
     return (
         <div>
            <AppoinmentBanner
@@ -13,6 +15,7 @@ const Appoinment = () => {
            <AvailableAppoinment
            selectedDate={selectedDate}
            ></AvailableAppoinment>
+           
         </div>
     );
 };
