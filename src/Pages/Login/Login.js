@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
@@ -25,7 +26,7 @@ const Login = () => {
                             <span className="label-text font-bold">Password</span>
                         </div>
                         <input type="password" {...register("password",{required:'Please enter a valid Pawword',
-                     minLength: 6   
+                     minLength: {value:6, message:'Password provide at least 6 charecter'}
                     }
                         )} className="input input-bordered w-full max-w-xs" />
                         <div className="label">
@@ -36,6 +37,7 @@ const Login = () => {
                     {errors.password && <p role="alert" className='text-red-700'>{errors.password.message}</p>}
                     <input className='btn btn-accent w-full' type="submit" value="Login" />
                 </form>
+                <p>New to Doctors Portal? <Link to='/signup' className='text-secondary'>Create new account</Link> </p>
                 <div className="divider">OR</div>
                 <button className='btn btn-outline w-full'>CONTINUE WITH GOOGLE</button>
             </div>
