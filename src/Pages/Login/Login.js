@@ -9,6 +9,7 @@ const Login = () => {
     const {signin} = useContext(AuthContext)
    const handleLogin = data =>{
     console.log(data)
+    setLoginError('')
     signin(data.email, data.password)
     .then(result => {
         const user = result.user;
