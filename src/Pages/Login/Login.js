@@ -6,7 +6,7 @@ import { AuthContext } from '../../contexts/AuthProvider';
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [loginError, setLoginError] = useState('');
-    const {signin} = useContext(AuthContext);
+    const {signin, googleLogin} = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -25,6 +25,15 @@ const Login = () => {
         console.log(err)
         setLoginError(err.message)
     })
+   }
+
+   const handleGoogleSign = () =>{
+    googleLogin()
+    .then(result =>{
+        const user = result.user;
+        console.log(user);
+    })
+    .catch(error => console.log(error));
    }
     return (
         <div  className='h-[500px] flex justify-center items-center'>
@@ -59,7 +68,7 @@ const Login = () => {
                 {loginError && <p className='text-red-700'>{loginError}</p>}
                 <p>New to Doctors Portal? <Link to='/signup' className='text-secondary'>Create new account</Link> </p>
                 <div className="divider">OR</div>
-                <button className='btn btn-outline w-full'>CONTINUE WITH GOOGLE</button>
+                <button className='btn btn-outline w-full' onClick={handleGoogleSign}>CONTINUE WITH GOOGLE</button>
             </div>
         </div>
     );
