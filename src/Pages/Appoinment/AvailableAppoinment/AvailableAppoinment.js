@@ -2,16 +2,22 @@ import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import AppointmentOptions from './AppointmentOptions';
 import AppoinmentModal from '../AppoinmentModel/AppoinmentModal';
+import { useQuery } from 'react-query';
 
 const AvailableAppoinment = ({ selectedDate }) => {
-  const [appoinmentOptions, setAppoinmentOptions] = useState([]);
+  // const [appointmentOptions, setAppoitnmentOptions] = useState([]);
   const [tretment, setTretment] = useState(null);
 
-  useEffect(() => {
-    fetch('appointmentOptions.json')
-      .then(res => res.json())
-      .then(data => setAppoinmentOptions(data))
-  }, [])
+const {data:appointmentOptions = []} = useQuery({
+  queryKey:'appointmentOptions',
+  queryFn: () => fetch(`http://localhost:5000/appointmentOptions`).then(res => res.json())
+})
+
+  // useEffect(() => {
+  //   fetch(`http://localhost:5000/appointmentOptions`)
+  //     .then(res => res.json())
+  //     .then(data => setAppoinmentOptions(data))
+  // }, [])
 
   return (
     <section className='mt-16'>
@@ -21,7 +27,7 @@ const AvailableAppoinment = ({ selectedDate }) => {
       </div>
       <div className='grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-6'>
         {
-          appoinmentOptions.map(option => <AppointmentOptions
+          appointmentOptions.map(option => <AppointmentOptions
             key={option._id}
             appointmentOption={option}
             setTretment={setTretment}

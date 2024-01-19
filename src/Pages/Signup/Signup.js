@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 
@@ -8,6 +8,8 @@ const Signup = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const {createUser, updateUser} = useContext(AuthContext);
     const [signupError, setSignupError] = useState('');
+    const navigate = useNavigate();
+    
     const handleSignup = data => {
         console.log(data)
         createUser(data.email, data.password)
@@ -19,7 +21,9 @@ const Signup = () => {
                 displayName: data.name
             }
             updateUser(userInfo)
-            .then(()=>{})
+            .then(()=>{
+                navigate('/')
+            })
             .catch(error => console.log(error))
         })
         .catch(error =>{ 
@@ -36,7 +40,7 @@ const Signup = () => {
                         <div className="label">
                             <span className="label-text font-bold">Name</span>
                         </div>
-                        <input type="text" {...register("name", { required: "Please enter name" })} className="input input-bordered w-full max-w-xs" />
+                        <input type="text"  {...register("name", { required: "Please enter name" })} className="input input-bordered w-full max-w-xs" />
                     </label>
                     {errors.name && <p role="alert" className='text-red-700'>{errors.name.message}</p>}
 
@@ -44,7 +48,7 @@ const Signup = () => {
                         <div className="label">
                             <span className="label-text font-bold">Email</span>
                         </div>
-                        <input type="email" {...register("email", { required: "please enter valid email id" })} className="input input-bordered w-full max-w-xs" />
+                        <input type="email"  {...register("email", { required: "please enter valid email id" })} className="input input-bordered w-full max-w-xs" />
                     </label>
                     {errors.email && <p role='alert' className='text-red-700'>{errors.email.message}</p>}
                     <label className="form-control w-full max-w-xs">
