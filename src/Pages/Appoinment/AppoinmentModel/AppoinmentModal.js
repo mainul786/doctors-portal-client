@@ -4,7 +4,7 @@ import { AuthContext } from '../../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 
 const AppoinmentModal = ({ tretment,setTretment, selectedDate }) => {
-    const { name, slots } = tretment;
+    const { name: tretmentName, slots } = tretment;
     const date = format(selectedDate, 'PP');
     const {user} = useContext(AuthContext);
 
@@ -19,7 +19,7 @@ const AppoinmentModal = ({ tretment,setTretment, selectedDate }) => {
         const booking = {
             appontmentDate: date,
             paitentName: name,
-            tretment: name,
+            tretment: tretmentName,
             slot,
             email,
             phone
@@ -50,7 +50,7 @@ const AppoinmentModal = ({ tretment,setTretment, selectedDate }) => {
             <div className='modal'>
                 <div className='modal-box relative'>
                     <label htmlFor="book-modal" className='btn btn-sm btn-circke absolute right-2 top-2'>X</label>
-                    <h3 className='text-lg font-bold mb-8'>{name}</h3>
+                    <h3 className='text-lg font-bold mb-8'>{tretmentName}</h3>
                     <form className='grid grid-cols-1 gap-3' onSubmit={handleBooking}>
                         <input type="text" value={date} disabled className="input input-bordered w-full " />
                         <select name='slot' className="select select-bordered w-full ">
