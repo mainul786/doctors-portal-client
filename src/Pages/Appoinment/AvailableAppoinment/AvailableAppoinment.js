@@ -1,23 +1,21 @@
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import AppointmentOptions from './AppointmentOptions';
 import AppoinmentModal from '../AppoinmentModel/AppoinmentModal';
 import { useQuery } from 'react-query';
+import Loading from '../../Shared/Loading/Loading';
 
 const AvailableAppoinment = ({ selectedDate }) => {
-  // const [appointmentOptions, setAppoitnmentOptions] = useState([]);
   const [tretment, setTretment] = useState(null);
-
-const {data:appointmentOptions = []} = useQuery({
-  queryKey:'appointmentOptions',
-  queryFn: () => fetch(`http://localhost:5000/appointmentOptions`).then(res => res.json())
+  const date = format(selectedDate, 'PP');
+const {data:appointmentOptions = [], refetch, isLoading} = useQuery({
+  queryKey:['appointmentOptions', date],
+  queryFn: () => fetch(`http://localhost:5000/appointmentOptions?date=${date}`).then(res => res.json())
 })
 
-  // useEffect(() => {
-  //   fetch(`http://localhost:5000/appointmentOptions`)
-  //     .then(res => res.json())
-  //     .then(data => setAppoinmentOptions(data))
-  // }, [])
+ if(isLoading){
+  return <Loading></Loading>
+ }
 
   return (
     <section className='mt-16'>
@@ -38,6 +36,7 @@ const {data:appointmentOptions = []} = useQuery({
       tretment = {tretment}
       setTretment = {setTretment}
       selectedDate = {selectedDate}
+      refetch = {refetch}
       ></AppoinmentModal>}
     </section>
   );
