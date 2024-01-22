@@ -6,6 +6,7 @@ import Appoinment from "../../Pages/Appoinment/Appoinment/Appoinment";
 import Signup from "../../Pages/Signup/Signup";
 import Dashbord from "../../Pages/Dashbord/Dashbord/Dashbord";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import DashbordLayout from "../../Layout/DashbordLayout";
 
 export const router = createBrowserRouter(
     [
@@ -33,7 +34,13 @@ export const router = createBrowserRouter(
         },
         {
             path:'/dashbord',
-            element:<PrivateRoute><Dashbord></Dashbord></PrivateRoute>
+            element:<PrivateRoute><DashbordLayout></DashbordLayout></PrivateRoute>,
+            children:[
+                {
+                    path:'/dashbord',
+                    element:<Dashbord></Dashbord>
+                }
+            ]
         }
     ]
 );
