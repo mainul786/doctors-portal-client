@@ -16,6 +16,7 @@ const MyAppointment = () => {
                 }
             })
             const data = await res.json();
+            console.log(data)
             return (data)
         }
     })
@@ -26,7 +27,6 @@ const MyAppointment = () => {
 
             <div className="overflow-x-auto">
                 <table className="table">
-                    {/* head */}
                     <thead>
                         <tr>
                             <th>Sl</th>
@@ -39,7 +39,7 @@ const MyAppointment = () => {
                     </thead>
                     <tbody>
                         {
-                            bookings.map((booking, idx) => <tr key={booking._id}>
+                            bookings?.map((booking, idx) => <tr key={booking._id}>
                                 <th>{idx + 1}</th>
                                 <td>{booking.paitentName}</td>
                                 <td>{booking.tretment}</td>

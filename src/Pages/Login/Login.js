@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
-import useToken from '../../hooks/useHook';
+import useToken from '../../hooks/useToken';
 
 
 const Login = () => {
