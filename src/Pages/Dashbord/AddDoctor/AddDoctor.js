@@ -5,6 +5,7 @@ import Loading from './../../Shared/Loading/Loading';
 
 const AddDoctor = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
+    const imageHostKey = process.env.REACT_APP_imgKey;
 
     const {data: specialties, isLoading} = useQuery({
         queryKey:['specility'],
@@ -16,7 +17,21 @@ const AddDoctor = () => {
 })
 
     const handleDoctor = data => {
-        console.log(data)
+        
+        const image = data.image[0];
+        const formData = new FormData();
+        formData.append('image', image);
+        const url = `https://api.imgbb.com/1/upload?expiration=600&key=${imageHostKey}`;
+        fetch(url,{
+            method:'POST',
+            body:formData
+        })
+        .then(res => res.json())
+        .then(imgData => {
+           if(imgData.success){
+          console.log(imgData.data.url)
+           }
+        })
     }
 
     if(isLoading){
@@ -61,9 +76,9 @@ const AddDoctor = () => {
                     <div className="label">
                         <span className="label-text font-bold">Photo</span>
                     </div>
-                    <input type="file"  {...register("img", { required: "Please enter photo" })} className="input input-bordered w-full max-w-xs" />
+                    <input type="file"  {...register("image", { required: "Please enter photo" })} className="input input-bordered w-full max-w-xs" />
                 </label>
-                {errors.img && <p role="alert" className='text-red-700'>{errors.img.message}</p>}
+                {errors.image && <p role="alert" className='text-red-700'>{errors.image.message}</p>}
                 <input className='btn btn-accent w-full mt-3' type="submit" value="Add Doctor" />
             </form>
         </div>
