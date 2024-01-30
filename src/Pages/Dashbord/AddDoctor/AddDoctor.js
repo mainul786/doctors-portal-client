@@ -1,11 +1,26 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
+import Loading from './../../Shared/Loading/Loading';
 
 const AddDoctor = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
 
+    const {data: specialties, isLoading} = useQuery({
+        queryKey:['specility'],
+        queryFn: async ()=>{
+            const res = await fetch(`http://localhost:5000/appointmentSpecility`);
+            const data = await res.json();
+            return data;
+        }
+})
+
     const handleDoctor = data => {
         console.log(data)
+    }
+
+    if(isLoading){
+        return <Loading></Loading>
     }
 
     return (
@@ -31,13 +46,24 @@ const AddDoctor = () => {
                     <div className="label">
                         <span className="label-text font-bold">Specality</span>
                     </div>
-                    <select className="select select-bordered w-full max-w-xs">
-                        <option disabled selected>Who shot first?</option>
-                        <option>Han Solo</option>
-                        <option>Greedo</option>
+                    <select 
+                    {...register('speciality')}
+                    className="select select-bordered w-full max-w-xs">
+                        {
+                            specialties.map(speciality =>  <option
+                          key = {speciality._id}
+                          value={speciality.name}
+                            >{speciality.name}</option>)
+                        }
                     </select>
                 </label>
-                {errors.password && <p role='alert' className='text-red-700'>{errors.password.message}</p>}
+                <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                        <span className="label-text font-bold">Photo</span>
+                    </div>
+                    <input type="file"  {...register("img", { required: "Please enter photo" })} className="input input-bordered w-full max-w-xs" />
+                </label>
+                {errors.img && <p role="alert" className='text-red-700'>{errors.img.message}</p>}
                 <input className='btn btn-accent w-full mt-3' type="submit" value="Add Doctor" />
             </form>
         </div>
