@@ -2,10 +2,13 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import Loading from './../../Shared/Loading/Loading';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const AddDoctor = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const imageHostKey = process.env.REACT_APP_imgKey;
+    const navigate = useNavigate();
 
     const {data: specialties, isLoading} = useQuery({
         queryKey:['specility'],
@@ -29,7 +32,29 @@ const AddDoctor = () => {
         .then(res => res.json())
         .then(imgData => {
            if(imgData.success){
-          console.log(imgData.data.url)
+          
+          const doctor = {
+            name: data.name,
+            email:data.email,
+            speciality: data.speciality,
+            image: imgData.data.url
+          }
+
+          fetch(`http://localhost:5000/doctors`, {
+            method:"POST",
+            headers:{
+                'content-type':'application/json',
+                authorization:`bearer ${localStorage.getItem('accessToken')}`
+            },
+            body:JSON.stringify(doctor)
+          })
+          .then(res => res.json())
+          .then(doctorData => {
+            if(doctorData.data.acknowledged){
+                toast.success('doctor inserted succefully!');
+                navigate('/dashboard/managedoctors');
+            }
+        })
            }
         })
     }
