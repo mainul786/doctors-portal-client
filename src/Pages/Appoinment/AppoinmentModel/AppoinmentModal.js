@@ -4,7 +4,7 @@ import { AuthContext } from '../../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 
 const AppoinmentModal = ({ tretment,setTretment, selectedDate, refetch }) => {
-    const { name: tretmentName, slots } = tretment;
+    const { name: tretmentName, slots, price } = tretment;
     const date = format(selectedDate, 'PP');
     const {user} = useContext(AuthContext);
 
@@ -15,6 +15,7 @@ const AppoinmentModal = ({ tretment,setTretment, selectedDate, refetch }) => {
         const slot = form.slot.value;
         const email = form.email.value;
         const phone = form.phone.value;
+
         
         const booking = {
             appontmentDate: date,
@@ -22,7 +23,8 @@ const AppoinmentModal = ({ tretment,setTretment, selectedDate, refetch }) => {
             tretment: tretmentName,
             slot,
             email,
-            phone
+            phone,
+            price
         }
         
 
