@@ -10,7 +10,7 @@ const ManageDoctors = () => {
     const closeModal = () => {
         setDeletingDoctor(null);
     }
-    const { data: doctors, isLoading } = useQuery({
+    const { data: doctors, isLoading, refetch } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
             try {
@@ -28,17 +28,19 @@ const ManageDoctors = () => {
         }
     })
 
-    const handleDeletes = doctor => {
-        console.log(doctor)
-    }
+   
 
-    const handleDelete = id => {
-        fetch(`http://localhost:5000/doctors/${id}`, {
-            method: "DELETE"
+    const handleDelete = doctor => {
+        fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+            method: "DELETE",
+            headers:{
+                authorization:`bearer ${localStorage.getItem('accessToken')}`
+            }
         })
             .then(res => res.json())
             .then(data => {
-                if (data.data.deletedCount > 1) {
+                if (data.data.deletedCount > 0) {
+                    refetch();
                     toast.success('deleted succefully');
                 }
             })
@@ -71,14 +73,14 @@ const ManageDoctors = () => {
                                     <div className="flex items-center gap-3">
                                         <div className="avatar">
                                             <div className="mask mask-squircle w-12 h-12">
-                                                <img src={doctor.image} alt="Avatar Tailwind CSS Component" />
+                                                <img src={doctor?.image} alt="Avatar Tailwind CSS Component" />
                                             </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td>{doctor.name}</td>
-                                <td>{doctor.email}</td>
-                                <td>{doctor.speciality}</td>
+                                <td>{doctor?.name}</td>
+                                <td>{doctor?.email}</td>
+                                <td>{doctor?.speciality}</td>
                                 <th>
                                     <label htmlFor='confirmModal' className="btn btn-error btn-xs" onClick={() => setDeletingDoctor(doctor)}> Delete</label >
                                 </th>
@@ -91,8 +93,8 @@ const ManageDoctors = () => {
             {
                 deletingDoctor && <ConfarmationModal
                     title={`Are you sure you want to delete?`}
-                    message={`if you delete ${deletingDoctor.name}. It cannot be undone>`}
-                    successAction={handleDeletes}
+                    message={`if you delete ${deletingDoctor.name}. It cannot be undone`}
+                    successAction={handleDelete}
                     modalData={deletingDoctor}
                     closeModal={closeModal}
                 ></ConfarmationModal>
