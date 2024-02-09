@@ -28,7 +28,7 @@ const AppoinmentModal = ({ tretment,setTretment, selectedDate, refetch }) => {
         }
         
 
-        fetch(`http://localhost:5000/bookings`,{
+        fetch(`https://doctor-portal-server-iota.vercel.app/bookings`,{
             method:'POST',
             headers:{
                 'content-type':'application/json'
